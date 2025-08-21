@@ -1,23 +1,29 @@
+import React, { useState, useEffect } from "react";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
+import { useTransactions } from "../../hooks/useTransactions";
 import { Alert, FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { SignOutButton } from "@/components/SignOutButton";
-import { useTransactions } from "../../hooks/useTransactions";
-import { useEffect, useState } from "react";
-import PageLoader from "../../components/PageLoader";
+import { BalanceCard } from "@/components/BalanceCard";
+import { TransactionItem } from "@/components/TransactionItem";
+import NoTransactionsFound from "@/components/NoTransactionFound";
 import { styles } from "../../assets/styles/home.styles";
 import { Ionicons } from "@expo/vector-icons";
-import { BalanceCard } from "../../components/BalanceCard";
-import { TransactionItem } from "../../components/TransactionItem";
-import NoTransactionsFound from "../../components/NoTransactionFound";
-
 export default function Page() {
   const { user } = useUser();
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
+  const { transactions, summary, isLoading, loadData, deleteTransaction } = useTransactions(user?.id);
 
-  const { transactions, summary, isLoading, loadData, deleteTransaction } = useTransactions(
-    user.id
+  useEffect(() => {
+    if (user?.id) {
+      loadData();
+    }
+  }, [user?.id]);
+
+  // Sort transactions by most recent (descending by created_at)
+  const sortedTransactions = [...transactions].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
   );
 
   const onRefresh = async () => {
@@ -26,18 +32,10 @@ export default function Page() {
     setRefreshing(false);
   };
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
-
-  const handleDelete = (id) => {
-    Alert.alert("Delete Transaction", "Are you sure you want to delete this transaction?", [
-      { text: "Cancel", style: "cancel" },
-      { text: "Delete", style: "destructive", onPress: () => deleteTransaction(id) },
-    ]);
+  const handleDelete = async (id) => {
+    await deleteTransaction(id);
+    await loadData();
   };
-
-  if (isLoading && !refreshing) return <PageLoader />;
 
   return (
     <View style={styles.container}>
@@ -46,7 +44,7 @@ export default function Page() {
         <View style={styles.header}>
           {/* LEFT */}
           <View style={styles.headerLeft}>
-           {/* <Image
+            {/* <Image
               source={require("../../assets/images/logo.png")}
               style={styles.headerLogo}
               resizeMode="contain"
@@ -60,7 +58,7 @@ export default function Page() {
           </View>
           {/* RIGHT */}
           <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.addButton} onPress={() => router.push("/create")}>
+            <TouchableOpacity style={styles.addButton} onPress={() => router.push("/create")}> 
               <Ionicons name="add-circle" size={20} color="#FFF" />
               <Text style={styles.addButtonText}>Add</Text>
             </TouchableOpacity>
@@ -80,7 +78,7 @@ export default function Page() {
       <FlatList
         style={styles.transactionsList}
         contentContainerStyle={styles.transactionsListContent}
-        data={transactions}
+        data={sortedTransactions}
         renderItem={({ item }) => <TransactionItem item={item} onDelete={handleDelete} />}
         ListEmptyComponent={<NoTransactionsFound />}
         showsVerticalScrollIndicator={false}
@@ -88,4 +86,4 @@ export default function Page() {
       />
     </View>
   );
-};
+}
