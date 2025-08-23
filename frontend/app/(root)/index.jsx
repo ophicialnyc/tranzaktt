@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
+import { COLORS } from "../../constants/colors";
 import { useTransactions } from "../../hooks/useTransactions";
 import { Alert, FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { SignOutButton } from "@/components/SignOutButton";
@@ -21,10 +22,10 @@ export default function Page() {
     }
   }, [user?.id]);
 
-  // Sort transactions by most recent (descending by created_at)
-  const sortedTransactions = [...transactions].sort(
-    (a, b) => new Date(b.created_at) - new Date(a.created_at)
-  );
+  // Sort transactions by most recent (descending by created_at) and limit to 5
+  const sortedTransactions = [...transactions]
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, 5);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -44,13 +45,13 @@ export default function Page() {
         <View style={styles.header}>
           {/* LEFT */}
           <View style={styles.headerLeft}>
-            {/* <Image
-              source={require("../../assets/images/logo.png")}
+             <Image
+              source={require("../../assets/images/tranzakt.png")}
               style={styles.headerLogo}
               resizeMode="contain"
-            /> */}
+            />
             <View style={styles.welcomeContainer}>
-              <Text style={styles.welcomeText}>Welcome,</Text>
+              <Text style={styles.welcomeText}>Hello,</Text>
               <Text style={styles.usernameText}>
                 {user?.emailAddresses[0]?.emailAddress.split("@")[0]}
               </Text>
@@ -68,8 +69,14 @@ export default function Page() {
 
         <BalanceCard summary={summary} />
 
-        <View style={styles.transactionsHeaderContainer}>
-          <Text style={styles.sectionTitle}>Recent Transactions</Text>
+        <View style={[styles.transactionsHeaderContainer, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}> 
+          <Text style={[styles.sectionTitle, { marginBottom: 0, lineHeight: 28 }]}>Recent Transactions</Text>
+          <Link href="/all-transactions" asChild>
+            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 12 }}>
+              <Text style={{ fontSize: 18, fontWeight: '600', color: COLORS.text }}>See all</Text>
+              <Ionicons name="arrow-forward-circle" size={22} color={COLORS.primary} style={{ marginLeft: 6 }} />
+            </TouchableOpacity>
+          </Link>
         </View>
       </View>
 

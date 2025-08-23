@@ -1,10 +1,9 @@
 import {
   View,
   Text,
-  Alert,
+  Modal,
   TouchableOpacity,
   TextInput,
-  ActivityIndicatorBase,
   ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -34,6 +33,7 @@ const CreateScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isExpense, setIsExpense] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
 
   const handleCreate = async () => {
     // validations
@@ -71,8 +71,7 @@ const CreateScreen = () => {
         throw new Error(errorData.error || "Failed to create transaction");
       }
 
-      Alert.alert("Success", "Transaction created successfully");
-      router.back();
+  setSuccessModalVisible(true);
     } catch (error) {
       Alert.alert("Error", error.message || "Failed to create transaction");
       console.error("Error creating transaction:", error);
@@ -83,6 +82,30 @@ const CreateScreen = () => {
 
   return (
     <View style={styles.container}>
+      {/* Success Modal */}
+      <Modal
+        visible={successModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setSuccessModalVisible(false)}
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.3)" }}>
+          <View style={{ backgroundColor: COLORS.card, padding: 24, borderRadius: 16, alignItems: "center" }}>
+            <Ionicons name="checkmark-circle" size={48} color={COLORS.primary} style={{ marginBottom: 12 }} />
+            <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 8 }}>Success</Text>
+            <Text style={{ fontSize: 16, marginBottom: 24 }}>Transaction created successfully!</Text>
+            <TouchableOpacity
+              style={{ backgroundColor: COLORS.primary, paddingVertical: 10, paddingHorizontal: 24, borderRadius: 8 }}
+              onPress={() => {
+                setSuccessModalVisible(false);
+                router.back();
+              }}
+            >
+              <Text style={{ color: COLORS.white, fontWeight: "bold", fontSize: 16 }}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       {/* HEADER */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>

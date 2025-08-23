@@ -5,20 +5,20 @@ import { COLORS } from "../constants/colors";
 export const BalanceCard = ({ summary }) => {
   return (
     <View style={styles.balanceCard}>
-      <Text style={styles.balanceTitle}>Total Balance</Text>
-      <Text style={styles.balanceAmount}>FCFA {parseFloat(summary.balance).toFixed(2)}</Text>
+      <Text style={styles.balanceTitle}>Net Balance</Text>
+      <Text style={styles.balanceAmount}>XAF {parseFloat(summary.balance).toFixed(2)}</Text>
       <View style={styles.balanceStats}>
         <View style={styles.balanceStatItem}>
           <Text style={styles.balanceStatLabel}>Income</Text>
           <Text style={[styles.balanceStatAmount, { color: COLORS.income }]}>
-            +FCFA {parseFloat(summary.income).toFixed(2)}
+            XAF +{parseFloat(summary.income).toFixed(2)}
           </Text>
         </View>
         <View style={[styles.balanceStatItem, styles.statDivider]} />
         <View style={styles.balanceStatItem}>
           <Text style={styles.balanceStatLabel}>Expenses</Text>
           <Text style={[styles.balanceStatAmount, { color: COLORS.expense }]}>
-            -FCFA {Math.abs(parseFloat(summary.expenses)).toFixed(2)}
+            XAF -{Math.abs(parseFloat(summary.expenses)).toFixed(2)}
           </Text>
         </View>
       </View>

@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   welcomeText: {
-    fontSize: 14,
+    fontSize: 16,
     color: COLORS.textLight,
     marginBottom: 2,
   },
