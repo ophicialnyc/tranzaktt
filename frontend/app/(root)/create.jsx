@@ -13,6 +13,7 @@ import { API_URL } from "../../constants/api";
 import { styles } from "../../assets/styles/create.styles";
 import { COLORS } from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
+import { Alert } from "react-native";
 
 const CATEGORIES = [
   { id: "food", name: "Food & Drinks", icon: "fast-food" },

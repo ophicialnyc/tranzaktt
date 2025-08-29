@@ -1,7 +1,7 @@
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { Text, TextInput, TouchableOpacity, View, Image } from "react-native";
-import { useState } from "react";
+import React, { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles } from "../../assets/styles/auth.styles";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,6 +12,7 @@ export default function Page() {
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = useState("");
+  const [username, setUsername] = React.useState('');
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -23,6 +24,7 @@ export default function Page() {
     try {
       const signInAttempt = await signIn.create({
         identifier: emailAddress,
+        identifier: username,
         password,
       });
 
@@ -66,24 +68,52 @@ export default function Page() {
             </TouchableOpacity>
           </View>
         ) : null}
-
-        <TextInput
-          style={[styles.input, error && styles.errorInput]}
-          autoCapitalize="none"
-          value={emailAddress}
-          placeholder="Enter email"
-          placeholderTextColor="#9A8478"
+      <View style={styles.input}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Email</Text>
+          <View style={styles.inputWrapper}>
+            <Ionicons name="mail" size={20} color={COLORS.textLight} style={styles.inputIcon} />
+            <TextInput
+              style={[styles.input, error && styles.errorInput]}
+              autoCapitalize="none"
+              value={emailAddress}
+              placeholder="Enter email"
+              placeholderTextColor="#9A8478"
           onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
         />
+        </View>
+        </View>
 
-        <TextInput
-          style={[styles.input, error && styles.errorInput]}
-          value={password}
-          placeholder="Enter password"
+        <View style={styles.inputGroup}>
+                <Text style={styles.label}>Username</Text>
+                <View style={styles.inputWrapper}>
+                <Ionicons name="person" size={20} color={COLORS.textLight} style={styles.inputIcon} />
+                <TextInput
+                 style={[styles.input, error && styles.errorInput]}
+                 autoCapitalize='none'
+                 value={username}
+                  placeholder="Enter your username"
+                  placeholderTextColor="#9A8478"
+                  onChangeText={(text) => setUsername(text)}
+        
+                />
+                </View>
+                </View>
+
+
+            <Text style={styles.label}>Password</Text>
+        <View style={styles.inputWrapper}>
+            <Ionicons name="lock-closed" size={20} color={COLORS.textLight} style={styles.inputIcon} />
+            <TextInput
+              style={[styles.input, error && styles.errorInput]}
+              value={password}
+              placeholder="Enter password"
           placeholderTextColor="#9A8478"
           secureTextEntry={true}
           onChangeText={(password) => setPassword(password)}
         />
+        </View>
+        </View>
 
         <TouchableOpacity style={styles.button} onPress={onSignInPress}>
           <Text style={styles.buttonText}>Sign In</Text>

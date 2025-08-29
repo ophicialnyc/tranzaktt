@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { API_URL } from "../constants/api";
 
-// const API_URL = "https://wallet-api-cxqp.onrender.com/api";
+// const API_URL = "https://tranz-7yd4.onrender.com";
 // const API_URL = "http://localhost:3000/api";
 
 export const useTransactions = (userId) => {

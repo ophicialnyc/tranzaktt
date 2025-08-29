@@ -16,6 +16,7 @@ export default function SignUpScreen() {
   const [emailAddress, setEmailAddress] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [name, setName] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [pendingVerification, setPendingVerification] = React.useState(false)
   const [code, setCode] = React.useState('')
   const [error, setError] = React.useState(null)
@@ -29,6 +30,7 @@ export default function SignUpScreen() {
     try {
       await signUp.create({
         fullName: name,
+        username,
         emailAddress,
         password,
       })
@@ -117,7 +119,7 @@ export default function SignUpScreen() {
      enableAutomaticScroll={true}
      extraScrollHeight={100}>
       <View style={styles.container}>
-        <Image source={require('../../assets/images/signin.png')} style={styles.illustration} />
+        <Image source={require('../../assets/images/signin.png')} style={styles.illustration} /> 
         <Text style= {styles.title}>Create Account</Text>
         
          {error ? (
@@ -130,6 +132,11 @@ export default function SignUpScreen() {
           </View>
         ) : null}
         
+        <View style={styles.input}>
+          <View style={styles.inputGroup}>
+                { /*<Text style={styles.label}>Full Name</Text>*/}
+                 <View style={styles.inputWrapper}>
+                   <Ionicons name="person" size={20} color={COLORS.textLight} style={styles.inputIcon} />
         <TextInput
          style={[styles.input, error && styles.errorInput]}
          autoCapitalize='none'
@@ -137,24 +144,61 @@ export default function SignUpScreen() {
           placeholder="Enter your name"
           placeholderTextColor="#9A8478"
           onChangeText={(text) => setName(text)}
-        />
 
+        />
+        </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+                { /*<Text style={styles.label}>Username</Text>*/}
+                 <View style={styles.inputWrapper}>
+                   <Ionicons name="person" size={20} color={COLORS.textLight} style={styles.inputIcon} />
         <TextInput
          style={[styles.input, error && styles.errorInput]}
          autoCapitalize='none'
-         value={emailAddress}
-          placeholder="Enter email address"
+         value={username}
+          placeholder="Enter your username"
           placeholderTextColor="#9A8478"
-          onChangeText={(email) => setEmailAddress(email)}
+          onChangeText={(text) => setUsername(text)}
+
         />
-        <TextInput
-          style={[styles.input, error && styles.errorInput]}
-          value={password}
-          secureTextEntry={true}
-          placeholder="Enter password"
-          placeholderTextColor="#9A8478"
-          onChangeText={(password) => setPassword(password)}
-        />
+        </View>
+        </View>
+
+       
+               <View style={styles.inputGroup}>
+                 {/*<Text style={styles.label}>Email</Text>*/}
+                 <View style={styles.inputWrapper}>
+                   <Ionicons name="mail" size={20} color={COLORS.textLight} style={styles.inputIcon} />
+                   <TextInput
+                     style={[styles.input, error && styles.errorInput]}
+                     autoCapitalize="none"
+                     value={emailAddress}
+                     placeholder="Enter email"
+                     placeholderTextColor="#9A8478"
+                 onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+               />
+               </View>
+               </View>
+
+               <View style={styles.inputGroup}>
+                 {/* <Text style={styles.label}>Password</Text>*/}
+               <View style={styles.inputWrapper}>
+                   <Ionicons name="lock-closed" size={20} color={COLORS.textLight} style={styles.inputIcon} />
+                   <TextInput
+                     style={[styles.input, error && styles.errorInput]}
+                     value={password}
+                     placeholder="Enter password"
+                 placeholderTextColor="#9A8478"
+                 secureTextEntry={true}
+                 onChangeText={(password) => setPassword(password)}
+               />
+
+               </View>
+
+               </View>
+               </View>
+               
         <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>

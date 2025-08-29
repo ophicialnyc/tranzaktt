@@ -49,11 +49,11 @@ export default function Page() {
               source={require("../../assets/images/tranzakt.png")}
               style={styles.headerLogo}
               resizeMode="contain"
-            />
+            /> 
             <View style={styles.welcomeContainer}>
               <Text style={styles.welcomeText}>Hello,</Text>
               <Text style={styles.usernameText}>
-                {user?.emailAddresses[0]?.emailAddress.split("@")[0]}
+                {user?.username[0]?.toUpperCase() + user?.username?.slice(1) || "User"}
               </Text>
             </View>
           </View>

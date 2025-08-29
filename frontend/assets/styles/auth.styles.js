@@ -26,15 +26,40 @@ export const styles = StyleSheet.create({
   input: {
     backgroundColor: COLORS.white,
     borderRadius: 12,
-    padding: 10,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+    padding: 8, 
+    flex: 1,
     fontSize: 13,
+    borderColor: COLORS.border,
     color: COLORS.text,
   },
   errorInput: {
     borderColor: COLORS.expense,
+  },
+  inputGroup: {
+    marginBottom: 20,
+    width: "100%",
+  },
+  inputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  eyeIcon: {
+    padding: 8,
+  },
+  inputIcon: {
+    marginRight: 10,
+  },
+    label: {
+    fontSize: 14,
+    marginBottom: 8,
+    color: COLORS.textPrimary,
+    fontWeight: "500",
   },
   button: {
     backgroundColor: COLORS.primary,
